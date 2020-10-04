@@ -9,7 +9,6 @@ describe('javascript-data-types/sort-strings', () => {
     const arr = ['b', 'c', 'a'];
     const arrCopy = [...arr];
     const sorted = sortStrings(arr);
-        console.log(sorted);
     expect(arr === sorted).toBeFalsy();
     expect(arr).toEqual(arrCopy);
   });

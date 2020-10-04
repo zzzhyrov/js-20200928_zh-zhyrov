@@ -4,21 +4,23 @@
  * @param {string} [param="asc"] param - the sorting type "asc" or "desc"
  * @returns {string[]}
  */
-export function sortStrings(arr, param) {
+export function sortStrings(arr, param = 'aec') {
 
     const arrCopy = arr.slice();
-    if (param == 'asc' || param == undefined) {
+    let arrSort = function() {
         return arrCopy.sort(function(a,b) {
         return a.localeCompare(b, ['ru' , 'en-US'], ({sensitivity : 'variant'},
         {caseFirst : 'upper'}));
         });
     }
 
-    if (param == 'desc') {
+    if (param === 'desc') {
         return arrCopy.sort(function(a,b) {
-        return a.localeCompare(b, ['ru', 'en-US'], ({sensitivity : 'variant'},
+        return b.localeCompare(a, ['ru', 'en-US'], ({sensitivity : 'variant'},
         {caseFirst : 'lower'}));
-        }).reverse();
+        });
     }
+
+    return arrSort();
 
 }

@@ -4,10 +4,10 @@
  * @param {string} [param="asc"] param - the sorting type "asc" or "desc"
  * @returns {string[]}
  */
-export function sortStrings(arr, param = 'aec') {
+export function sortStrings(arr, param = 'asc') {
 
     const arrCopy = arr.slice();
-    let arrSort = function() {
+    const arrSort = function() {
         return arrCopy.sort(function(a,b) {
         return a.localeCompare(b, ['ru' , 'en-US'], ({sensitivity : 'variant'},
         {caseFirst : 'upper'}));

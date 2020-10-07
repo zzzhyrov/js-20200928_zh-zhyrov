@@ -18,7 +18,7 @@ export function sortStrings(arr, param = 'asc') {
     function makeSorting(array, direction) {
         return [...array].sort((a, b) => 
             direction * a.localeCompare(b, ['ru', 'en'], 
-            ({sensitivity : 'variant'}, {caseFirst : 'lower'})));
+            ({sensitivity : 'variant'}, {caseFirst : 'upper'})));
     }
 }
 

@@ -1,4 +1,5 @@
 export default class ColumnChart {
+    chartHeight = 50;
     
     constructor({
         data = [],
@@ -14,17 +15,18 @@ export default class ColumnChart {
     }
     
     render() {
-        let chartHeight = 50;
+        // let chartHeight = 50;
+
         let maxValue = Math.max(...this.data);
         
         let columns = '';
         let columnsClassName = '';
+        let size = this.chartHeight / maxValue;
 
         if (this.data.length !== 0) {
             columns = (this.data)
             .map(function(item) {
-            let size = chartHeight / maxValue;
-            return `<div style="--value: ${(item * size).toFixed(0)}" data-tooltip="${(item / maxValue * 100).toFixed(0)}%"></div>`;
+            return `<div style="--value: ${Math.floor(item * size)}" data-tooltip="${(item / maxValue * 100).toFixed(0)}%"></div>`;
             })
             .join('');
             columnsClassName = 'column-chart';
@@ -47,10 +49,19 @@ export default class ColumnChart {
         `;
         
         this.element = column_chart;
+        this.chartHeight = 50;
     }
     
     update() {
         this.render()
+    }
+
+    remove() {
+        this.element.remove();
+    }
+
+    destroy() {
+        
     }
 
 }

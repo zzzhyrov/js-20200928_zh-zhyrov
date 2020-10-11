@@ -1,5 +1,4 @@
 export default class ColumnChart {
-    // element;
     
     constructor({
         data = [],

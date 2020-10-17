@@ -52,7 +52,7 @@ export default class ColumnChart {
 
         this.element = columnChart;
         
-        console.log(this.element);
+        // console.log(this.element);
         this.subElements = this.getSubElements(this.element);
     }
     

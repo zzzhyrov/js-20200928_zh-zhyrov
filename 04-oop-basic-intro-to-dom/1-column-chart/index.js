@@ -1,4 +1,5 @@
 export default class ColumnChart {
+    subElements = {}; //для обновления столбиков графика
     chartHeight = 50;
     
     constructor({
@@ -11,32 +12,33 @@ export default class ColumnChart {
         this.label = label;
         this.value = value;
         this.link = link;
+
         this.render();
     }
     
-    render() {
-        // let chartHeight = 50;
-
-        let maxValue = Math.max(...this.data);
-        
-        let columns = '';
-        let columnsClassName = '';
+    getColumnBody(data) {
+        const maxValue = Math.max(...data);
         let size = this.chartHeight / maxValue;
 
-        if (this.data.length !== 0) {
-            columns = (this.data)
-            .map(function(item) {
+        return data
+        .map((item) => {
             return `<div style="--value: ${Math.floor(item * size)}" data-tooltip="${(item / maxValue * 100).toFixed(0)}%"></div>`;
-            })
-            .join('');
+        })
+        .join('');
+    }
+    
+    render() {
+        let columnsClassName = '';
+        
+        if (this.data.length) {
             columnsClassName = 'column-chart';
         } else {
             columnsClassName = 'column-chart_loading' + ' ' + 'column-chart';
         };
 
-        let column_chart = document.createElement('div');
-        column_chart.className = columnsClassName;
-        column_chart.innerHTML = `
+        let columnChart = document.createElement('div');
+        columnChart.className = columnsClassName;
+        columnChart.innerHTML = `
         <div class="column-chart__title">
             Total ${this.label}
             <a href="/sales" class="column-chart__link">View all</a>
@@ -44,16 +46,29 @@ export default class ColumnChart {
         <div class="column-chart__container">
             <div data-element="header" class="column-chart__header">${this.value}</div>
             <div data-element="body" class="column-chart__chart">
-                ${columns}
+                ${this.getColumnBody(this.data)}
             </div>
         `;
+
+        this.element = columnChart;
         
-        this.element = column_chart;
-        this.chartHeight = 50;
+        console.log(this.element);
+        this.subElements = this.getSubElements(this.element);
     }
     
-    update() {
-        this.render()
+    getSubElements(element) {
+        const elements = element.querySelectorAll('[data-element]');
+
+        // console.log(elements);
+        return [...elements].reduce((accum, subElement) => {
+            accum[subElement.dataset.element] = subElement;
+
+            return accum;
+        },  {});
+    }
+
+    update(data) {
+        this.subElements.body.innerHTML = this.getColumnBody(data);
     }
 
     remove() {
@@ -61,7 +76,8 @@ export default class ColumnChart {
     }
 
     destroy() {
-        
+        this.remove();
+        this.element = null;
     }
 
 }

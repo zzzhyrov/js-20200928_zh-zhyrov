@@ -1,18 +1,19 @@
 export default class NotificationMessage {
-    static flag;
+    static activeMessage;
     
-    constructor(text, {
+    constructor(textMessage, {
         duration = 0,
         type = ''
     } = {}) {
         // console.log(NotificationMessage.flag);
-        if (NotificationMessage.flag == true) {
-            this.remove();
+        if (NotificationMessage.activeMessage) {
+            NotificationMessage.activeMessage.remove();
         }
 
-        this.text = text || '';
+        this.textMessage = textMessage || '';
         this.duration = duration;
         this.type = type;
+        this.render();
     }
     
     get template() {
@@ -21,34 +22,36 @@ export default class NotificationMessage {
         <div class="inner-wrapper">
             <div class="notification-header">${this.type}</div>
             <div class="notification-body">
-                Hello world
+                ${this.textMessage}
             </div>
         </div>
         `;
     }
 
-    show() {  
-        const notificationBox = document.createElement('div');
+    render() {
+        const element = document.createElement('div');
         
-        NotificationMessage.flag = true;
-        notificationBox.className = `notification ${this.type}`;
-        document.body.style.cssText = `--value:${this.duration/1000}s`; // скрыть
-        notificationBox.innerHTML = this.template;
-        let button = document.getElementById("btn1");
-        button.after(notificationBox);
-        NotificationMessage.flag = true;
+        element.className = `notification ${this.type}`;
+        document.body.style.cssText = `--value:${this.duration/1000}s`;
+        element.innerHTML = this.template;
+
+        this.element = element;
+        
+        NotificationMessage.activeMessage = this.element;
+    }
+
+    show(parent = document.body) {  
+        parent.append(this.element);
         
         setTimeout(() => {
             this.remove();
-            NotificationMessage.flag = false;
         }, this.duration);
     }
 
     remove() {
-        if (document.querySelector('.notification')) {
-        document.querySelector('.notification').remove();
+        this.element.remove();
     }
-    }
+    
 
     destroy() {
         this.remove();

@@ -4,5 +4,20 @@
  * @returns {object | undefined} - returns new object or undefined if nothing did't pass
  */
 export function invertObj(obj) {
+    let newObj = {};
 
+    if (!obj) {
+        return obj;
+    };
+    
+    if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+        return obj;
+    };
+
+    Object.keys(obj).forEach(function(value) {
+    let key = obj[value];
+    newObj[key] = value;
+    });
+
+    return newObj;
 }

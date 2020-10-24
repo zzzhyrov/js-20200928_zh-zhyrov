@@ -1,5 +1,5 @@
 export default class ColumnChart {
-    subElements = {}; //для обновления столбиков графика
+    subElements = {};
     chartHeight = 50;
     
     constructor({
@@ -18,7 +18,7 @@ export default class ColumnChart {
     
     getColumnBody(data) {
         const maxValue = Math.max(...data);
-        let size = this.chartHeight / maxValue;
+        const size = this.chartHeight / maxValue;
 
         return data
         .map((item) => {
@@ -30,13 +30,11 @@ export default class ColumnChart {
     render() {
         let columnsClassName = '';
         
-        if (this.data.length) {
-            columnsClassName = 'column-chart';
-        } else {
+        (this.data.length) ? 
+            columnsClassName = 'column-chart':
             columnsClassName = 'column-chart_loading' + ' ' + 'column-chart';
-        };
 
-        let columnChart = document.createElement('div');
+        const columnChart = document.createElement('div');
         columnChart.className = columnsClassName;
         columnChart.innerHTML = `
         <div class="column-chart__title">
@@ -52,14 +50,12 @@ export default class ColumnChart {
 
         this.element = columnChart;
         
-        // console.log(this.element);
         this.subElements = this.getSubElements(this.element);
     }
     
     getSubElements(element) {
         const elements = element.querySelectorAll('[data-element]');
 
-        // console.log(elements);
         return [...elements].reduce((accum, subElement) => {
             accum[subElement.dataset.element] = subElement;
 

@@ -1,21 +1,20 @@
 export default class NotificationMessage {
     static activeMessage;
-    
-    constructor(textMessage, {
+
+    constructor(textMessage = '', {
         duration = 0,
         type = ''
     } = {}) {
-        // console.log(NotificationMessage.flag);
         if (NotificationMessage.activeMessage) {
             NotificationMessage.activeMessage.remove();
         }
 
-        this.textMessage = textMessage || '';
+        this.textMessage = textMessage;
         this.duration = duration;
         this.type = type;
         this.render();
     }
-    
+
     get template() {
         return `
         <div class="timer"></div>
@@ -34,7 +33,7 @@ export default class NotificationMessage {
         element.className = `notification ${this.type}`;
         document.body.style.cssText = `--value:${this.duration/1000}s`;
         element.innerHTML = this.template;
-
+        
         this.element = element;
         
         NotificationMessage.activeMessage = this.element;
@@ -51,7 +50,6 @@ export default class NotificationMessage {
     remove() {
         this.element.remove();
     }
-    
 
     destroy() {
         this.remove();

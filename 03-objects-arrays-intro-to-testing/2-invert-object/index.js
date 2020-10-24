@@ -8,13 +8,16 @@ export function invertObj(obj) {
 
     if (!obj) {
         return obj;
-    } else if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+    };
+    
+    if (Object.keys(obj).length === 0 && obj.constructor === Object) {
         return obj;
-    } else {
-        Object.keys(obj).forEach(function(value) {
-        let key = obj[value];
-        newObj[key] = value;
+    };
+
+    Object.keys(obj).forEach(function(value) {
+    let key = obj[value];
+    newObj[key] = value;
     });
+
     return newObj;
-    }
 }
